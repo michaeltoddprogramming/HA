@@ -1,0 +1,29 @@
+<h1>Listings Page</h1>
+
+<div id="listings" class="listings">
+    <% for(let auction of auctions) { %>
+        <% let listingDetails = {}; %>
+        <% if (auction["listingDetails"]) { %>
+            <% try { %>
+                <% listingDetails = JSON.parse(auction["listingDetails"]); %>
+            <% } catch (e) { %>
+                <% console.error('Error parsing listingDetails:', e); %>
+            <% } %>
+        <% } %>
+        <article>
+            <h3><%= auction['auctionName'] %></h3>
+            <a href="/auction/<%= auction['id'] %>">
+                <img src="<%= auction["imageURL"] ? auction["imageURL"] : '' %>" class="auction-image">
+            </a>
+
+            <p>Bedrooms: <%= listingDetails["bedrooms"] ? listingDetails["bedrooms"] : '' %></p>
+            <p>Bathrooms: <%= listingDetails["bathrooms"] ? listingDetails["bathrooms"] : '' %></p>
+            <p>Location: <%= listingDetails["location"] ? listingDetails["location"] : '' %></p>
+            <p>Highest Bid: <%= auction["highestBid"] %></p>
+            <p>State: <%= auction["state"] %></p>
+
+
+        </article>
+
+    <% } %>
+</div>

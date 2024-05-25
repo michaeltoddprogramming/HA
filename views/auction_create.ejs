@@ -1,0 +1,47 @@
+<h3>Create an Auction</h3>
+
+<!-- Post root has the same url so i leave action open -->
+<form action="/auction/create" method="post" enctype="multipart/form-data">
+    <h4>Auction Info</h4>
+    <br>
+    <label for="auctionName">Auction Name:</label>
+    <input type="text" id="name" name="auctionName" required placeholder="Enter auction title" value="Default Auction Title">
+
+    <label for="startDate">Start Date and Time:</label>
+    <input type="datetime-local" id="start_date" name="startDate" required value="2022-01-01T00:00">
+
+    <label for="endDate">End Date and Time:</label>
+    <input type="datetime-local" id="end_date" name="endDate" required value="2022-01-02T00:00">
+
+    <h4>Listings Info</h4>
+    <br>
+    <label for="propertyTitle">Property Title:</label>
+    <input type="text" id="title" name="title" required placeholder="Enter property title" value="Default Property Title">
+
+    <label for="price">Price:</label>
+    <input type="number" id="price" name="price" required placeholder="Enter price" value="1000">
+
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" required placeholder="Enter location" value="Default Location">
+
+    <label for="bedrooms">Bedrooms:</label>
+    <input type="number" id="bedrooms" name="bedrooms" required placeholder="Enter number of bedrooms" value="2">
+
+    <label for="bathrooms">Bathrooms:</label>
+    <input type="number" id="bathrooms" name="bathrooms" required placeholder="Enter number of bathrooms" value="1">
+
+    <label for="parkingSpaces">Parking Spaces:</label>
+    <input type="number" id="parking_spaces" name="parkingSpaces" required placeholder="Enter number of parking spaces" value="1">
+
+    <label for="amenities">Amenities:</label>
+    <textarea id="amenities" name="amenities" required placeholder="Enter amenities">Default Amenities</textarea>
+
+    <label for="description">Short Description:</label>
+    <textarea id="description" name="description" required placeholder="Enter short description">Default Description</textarea>
+
+    <label for="image">Image:</label>
+    <input type="text" id="images" name="images" required>
+
+    <input type="submit" value="Create Auction">
+
+</form>

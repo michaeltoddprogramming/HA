@@ -1,0 +1,54 @@
+<form action="" method="POST">
+    <input type="hidden" name="type" value="Login">
+    <label for="email">Email:</label>
+    <input type="text" name="email" id="email">
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password">
+
+    <button id="submit">Login</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    window.onload = function() {
+        let submit = document.getElementById('submit');
+        submit.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            let body = {
+                "type": "Login",
+                "email": document.getElementById('email').value,
+                "password": document.getElementById('password').value,
+            }
+
+            makePostRequest(body).then((response) => {
+                response = JSON.parse(response);
+
+                if (response.status === "success") {
+                    alert("user has been logged in!");
+
+                    let user = response.data.user;
+                    sessionStorage.setItem('user_id', user.id);
+                    sessionStorage.setItem('username', user.name);
+                    sessionStorage.setItem('email', user.email);
+                    sessionStorage.setItem('apikey', user.apikey);
+                    localStorage.setItem('API_KEY', user.apikey);
+                    console.log("Michael Todd");
+
+                    // Send a POST request to the server with the API key
+                    fetch('/store-api-key', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ apikey: user.apikey })
+                    });
+
+                    window.location.href = '/';
+                } else {
+                    alert("error logging in: ", response.message);
+                }
+            });
+        });
+    }
+</script>

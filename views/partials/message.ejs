@@ -1,0 +1,8 @@
+<script>
+    if (sessionStorage.getItem('message')) {
+        let message = sessionStorage.getItem('message');
+        let message_div = `<div class="message">${message}</div>`;
+        document.body.innerHTML += message_div;
+        sessionStorage.removeItem('message');
+    }
+</script>

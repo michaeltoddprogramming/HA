@@ -1,0 +1,349 @@
+/* THEME COLOURS */
+:root {
+    --theme-white: #FEFFFF;
+    --theme-brown: #8E793E;
+    --theme-gold: #AD974F;
+    --theme-grey: #EAEAEA;
+    --theme-dark: #231F20;
+}
+
+/* General */
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  /* Remove margin if I don't want the gap in the navbar */
+  margin:0;
+}
+
+.lightmode {
+  background-color: var(--theme-white);
+}
+
+.darkmode {
+  background-color: var(--theme-dark);
+}
+
+
+/* Navbar */
+nav {
+  background-color: var(--theme-grey);
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  padding-bottom: 50px;
+  margin-bottom: 50px;
+}
+
+nav h3 {
+  color: var(--theme-dark);
+  font-size: 2em;
+  font-weight: bold;
+  user-select: none;
+}
+
+nav ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li a {
+  color: var(--theme-dark);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+nav ul li a:hover {
+  background-color: var(--theme-brown);
+  color: var(--theme-white);
+}
+
+nav ul li a.active {
+  background-color: var(--theme-gold);
+  color: var(--theme-white);
+}
+
+/* Filter/Sort */
+
+div.filter {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 1rem;
+}
+
+.right-side {
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  gap: 1rem;
+  justify-content: left;
+  align-items: center;
+  margin-left:auto;
+}
+
+
+div.listings {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+div.listings article a {
+  display: inline-block;
+  overflow: hidden;
+  width: fit-content; 
+}
+
+
+div.listings article, div.agencies article {
+  border: 2px solid var(--theme-dark);
+  border-radius: 5px;
+  padding: 2rem;
+  
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+article img {
+  width: 100%;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+h3 {
+  text-align: center;
+  font-size: 2rem;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.price::before {
+  content: 'R';
+}
+.price {
+  font-style: italic;
+}
+
+button {
+  background-color: var(--theme-gold);
+  color: var(--theme-white);
+  padding: 10px;
+  font-size: 0.75rem;
+  margin: 10px;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  
+  /* Center the button within a div */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* Agents */
+body .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin:auto;
+  padding-right: 20%;
+  padding-left: 20%;
+}
+
+div.agencies {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.agencies article a {
+  text-align: center;
+  padding: 1rem;
+  background-color: var(--theme-gold);
+  color: var(--theme-white);
+  text-decoration: none;
+  font-size: 1.5rem;
+  margin: 1rem;
+  margin-top: auto;
+}
+
+
+/* VIEW */
+
+div.carousel * {
+  box-sizing:border-box;
+}
+
+h1 {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 3rem;
+}
+
+div.carousel {
+  max-width: 1000px;
+  margin: auto;
+  position: relative;
+}
+
+article.carousel-item img {
+  width: 100%;
+  /* height: 100%;
+  object-fit: cover; */
+}
+
+.next, .prev {
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -30px;
+  padding: 16px;
+  color: var(--theme-white);
+  font-weight: bold;
+  font-size: 25px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  text-decoration: none;
+}
+
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+.carousel-text {
+  color: var(--theme-white);
+  font-size: 25px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+div.view-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  width: 50%;
+  margin: 0 auto; 
+}
+
+div.view-description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Add this line */
+  text-align: center;
+  width: 50%;
+  margin: 0 auto; 
+}
+
+div.view-description button {
+  background-color: var(--theme-gold);
+  color: var(--theme-white);
+  padding: 1rem;
+  font-size: 1.5rem;
+  margin: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 300px; 
+}
+
+/* Calculators */
+.calculator-heading {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 3rem;
+}
+
+div.calculators {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content:space-evenly;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 500px;
+  margin: 0 auto; /* center the form */
+}
+
+form input[type="text"], form input[type="number"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+form button {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--theme-gold);
+  color: var(--theme-white);
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: var(--theme-brown);
+}
+
+/* Favourites */
+.favourite-heading {
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 3rem;
+}
+
+
+/* Loading Icon */
+#loading {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 200px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+
+  background-image: url("../img/loading-icon.gif");
+}
+
+/* Footer */
+footer {
+  background-color: var(--theme-grey);
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Messages */
+.message {
+  background-color: var(--theme-gold);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding: 1rem;
+}

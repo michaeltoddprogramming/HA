@@ -1,0 +1,147 @@
+<section class="view">
+    <% let auctionId = id; %>
+    <% let auction = auctions.find(a => a.id === auctionId); %>
+    <div class="carousel" id="carousel">
+        <article class="carousel-item">
+            <img id="carousel-image" alt="carousel image" src="<%= auction["imageURL"] ? auction["imageURL"] : '' %>">
+        </article>
+    </div>
+    
+    <% let listingDetails = {}; %>
+    <% if (auction["listingDetails"]) { %>
+        <% try { %>
+            <% listingDetails = JSON.parse(auction["listingDetails"]); %>
+            <% } catch (e) { %>
+                <% console.error('Error parsing listingDetails:', e); %>
+                <% } %>
+                <% } %>
+        <div class="view-description">
+        <p>Price: <%= listingDetails['price'] ? listingDetails['price'] : '' %></p>
+        <h1 id="title"><%= listingDetails['title'] ? listingDetails['title'] : '' %></h1>
+        <p>Location: <%= listingDetails['location'] ? listingDetails['location'] : '' %></p>
+        <p>Bathrooms: <%= listingDetails['bathrooms'] ? listingDetails['bathrooms'] : '' %></p>
+        <p>Bedrooms: <%= listingDetails['bedrooms'] ? listingDetails['bedrooms'] : '' %></p>
+        <p>Amenities: <%= listingDetails['amenities'] ? listingDetails['amenities'] : '' %></p>
+        <p>Parking Spaces: <%= listingDetails['parkingSpaces'] ? listingDetails['parkingSpaces'] : '' %></p>
+        <p>Description: <%= listingDetails['shortDescription'] %></p>
+    </div>
+
+    <div class="bids">
+        <h2>Bids</h2>
+        <p>Highest Bid: <span id="highest-bid"><%= auction.highestBid %></span></p>
+        <form id="bid-form">
+            <input type="number" id="bid-amount" placeholder="Enter bid amount" required>
+            <button type="submit">Bid</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    window.onload = function() {
+        let bidForm = document.getElementById('bid-form');
+        let highestBid = document.getElementById('highest-bid');
+        let auction_id = "<%= id %>";
+        
+        console.log(auction_id);
+        console.log(sessionStorage.getItem('apikey'));
+
+        let body = {
+            "type": "GetAuction",
+            "apikey": sessionStorage.getItem('apikey'),
+            "id": auction_id,
+            "return": ["*"]
+        }
+
+        setInterval(function() {
+            makePostRequest(body).then((response) => {
+                response = JSON.parse(response);
+                console.log(response);
+                if (response.status == 'success' && response.data && response.data.length > 0) {
+                    console.log("Retrieving auction data");
+                    let auctionData = response.data[0]; // Access the first element of the data array
+
+                    let previous_state = auctionData.state;
+                    console.log("state: " + auctionData.state);
+                    console.log("highestBid: " + auctionData.highestBid);
+                    
+                    let date_time = new Date();
+        
+                    if (date_time > new Date(auctionData.end_date)) {
+                        auctionData.state = "DONE";
+                    } else if (date_time > new Date(auctionData.start_date) && date_time < new Date(auctionData.end_date)) {
+                        auctionData.state = "ONGOING";
+                    } else {
+                        auctionData.state = "WAITING";
+                    }
+                    console.log(sessionStorage.getItem('user_id'));
+                    console.log(auctionData.highestBid);
+                    if (previous_state != auctionData.state) {
+                        socket.emit('update_state', { auction_id:auction_id, state:auctionData.state, buyer:auctionData.buyer, highest_bid:auctionData.highestBid });
+                        if (auctionData.state == "DONE" && auctionData.buyer == sessionStorage.getItem('user_id')) {
+                            alert("Congratulations! You have won the auction!");
+                        } else if (auctionData.state == "DONE" && auctionData.buyer != sessionStorage.getItem('user_id')) {
+                            alert("Sorry! You have lost the auction!");
+                            window.location.href = '/';
+                        } 
+                    }
+
+                    if (auctionData.state == "ONGOING") {
+                        highestBid.innerText = auctionData.highestBid;
+                    } else {
+                        // if (sessionStorage.getItem('user_id') != auctionData.buyer) {
+                        //     alert("Auction is not available rn!")
+                        //     window.location.href = '/';
+                        // } 
+                    }
+
+                } else {
+                    console.log(response.message);
+                }
+
+            })
+
+    
+        }, 5000);
+
+
+        
+        bidForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let amount = document.getElementById('bid-amount').value;
+
+            if (amount > Number(highestBid.innerText)) {
+                highestBid.innerText = amount;
+                socket.emit('bid', { auction_id:auction_id, amount:amount, user_id:sessionStorage.getItem('user_id') });
+                socket.on('bid_response', function(data) {
+                    alert(data['status'] + " : " + data['data']);
+                });
+
+                // Update highestBid in the database
+                let updateBody = {
+                    "type": "UpdateAuction",
+                    "apikey": sessionStorage.getItem('apikey'),
+                    "id": auction_id,
+                    "highestBid": amount,
+                    "state": "ONGOING",
+                    "buyer": "Michael"
+                }
+                makePostRequest(updateBody).then((response) => {
+                    if (response && typeof response === 'string' && response.trim().startsWith('{')) {
+                        response = JSON.parse(response);
+                        if (response.status == 'success') {
+                            console.log("Updated highestBid in the database");
+                        } else {
+                            console.log(response.message);
+                        }
+                    } else {
+                        console.log('Invalid or empty response:', response);
+                    }
+                });
+            } else {
+                alert("bid amount is less than highest bid!");
+            }
+        });
+    }
+
+</script>

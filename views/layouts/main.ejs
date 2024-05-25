@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+
+        <title><%= title %></title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <link rel="icon" type="image/x-icon" href="/img/logo.png">
+        <meta name="author" content="John-Peter(u23533529) Krause">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;900&display=swap" rel="stylesheet">
+
+        <link href="/css/styles.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+
+        <%- include('../partials/header.ejs') %>
+        <%- include('../partials/message.ejs') %>
+
+        <main>
+            <%- body %>
+        </main> 
+
+        <%- include('../partials/footer.ejs') %>
+
+
+    </body> 
+
+</html>
+

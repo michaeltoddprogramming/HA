@@ -1,0 +1,66 @@
+<header>
+    <nav>
+        <h3>MT Auctions</h3>
+
+        <ul id="nav-links">
+            <li><a href='/' class='<%= title === "Home" ? "active" : "" %>'>Index</a></li>
+            <li><a href='/auction/create' class='<%= title === "Create Auction" ? "active" : "" %>'>Create Auction</a></li>
+        </ul>
+    </nav>
+</header>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    // Starts socket connection
+    let socket = io();
+
+    // FOR USE IN ALL PAGES
+    async function makePostRequest(body) {
+
+        return new Promise((resolve) => {
+            const xhttp = new XMLHttpRequest();
+
+            xhttp.onload = function() {
+                resolve(this.responseText);
+            }
+
+            xhttp.open("POST", "https://wheatley.cs.up.ac.za/u23540223/api.php", true, "u23540223", "Michael53816!@");
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            xhttp.send(JSON.stringify(body));
+        });
+    }
+
+    let nav_links = document.getElementById('nav-links');
+    
+    let username = sessionStorage.getItem('username');
+    console.log("username: ", username);
+    if (username != null) {
+        nav_links.innerHTML += `<li><a href="#" id="logout">Logout</a></li>`;
+        nav_links.innerHTML += `<li><a href='javascript:void(0)'>Welcome ${username}!</a></li>`;
+
+
+        socket.on('connect', () => {
+            socket.emit('join', username);
+        });
+
+        const logoutLink = document.getElementById('logout');
+        logout.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            sessionStorage.removeItem('username');
+            sessionStorage.removeItem('user_id');
+
+            socket.emit('logout', username);
+
+            window.location.href = '/login';
+        });
+
+    } else {
+        nav_links.innerHTML += `<li><a href='/login' class='<%= title === "Login" ? "active" : "" %>'>Login</a></li>`;
+        if (window.location.pathname != '/login')
+            window.location.href = '/login';
+    }
+    // window.onload = function() {
+        
+    // }
+</script>
